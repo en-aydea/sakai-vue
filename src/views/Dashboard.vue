@@ -90,9 +90,7 @@ function setChartOptions() {
     };
 }
 
-const formatCurrency = (value) => {
-    return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-};
+
 
 watch([getPrimary, getSurface, isDarkTheme], () => {
     chartData.value = setChartData();
@@ -116,8 +114,81 @@ watch([getPrimary, getSurface, isDarkTheme], () => {
   
       <!-- File Upload Input -->
       <div class="mt-4">
-        <input type="file" @change="handleFileUpload" class="file-input" />
-        <button @click="uploadFile" class="mt-2 p-button p-button-primary">Upload</button>
+        <!-- Custom "Choose File" Button as Label -->
+        <label for="file-upload" class="choose-file-btn">
+          Choose File
+        </label>
+        <input type="file" id="file-upload" @change="handleFileUpload" class="file-input" />
+  
+       <!-- Upload Button with Label -->
+<button @click="uploadFile" class="mt-2 p-button p-button-primary">
+  <span class="mr-2">Upload</span> <!-- Label Text -->
+  <i class="pi pi-upload"></i> <!-- Icon (optional) -->
+</button>
+
       </div>
     </div>
   </template>
+  
+  <script>
+  export default {
+    data() {
+      return {
+        selectedFile: null,
+      };
+    },
+    methods: {
+      handleFileUpload(event) {
+        // Handle file selection
+        const file = event.target.files[0];
+        if (file) {
+          this.selectedFile = file;
+          console.log("Selected file:", file.name);
+        }
+      },
+      uploadFile() {
+        if (this.selectedFile) {
+          // Here you would upload the file
+          console.log("Uploading file:", this.selectedFile.name);
+        } else {
+          alert("Please select a file to upload.");
+        }
+      },
+    },
+  };
+  </script>
+  
+  <style scoped>
+  .file-input {
+    display: none; /* Hide the default file input */
+  }
+  
+  /* Custom "Choose File" button styles */
+  .choose-file-btn {
+    display: inline-block;
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #17ed13; /* Customize color */
+    color: white;
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid #007ad9; /* Add border to make it look like a button */
+    transition: all 0.3s ease; /* Add a smooth transition */
+  }
+  
+  .choose-file-btn:hover {
+    background-color: #005f99; /* Hover state */
+    border-color: #1bda06;
+  }
+  
+  .choose-file-btn:active {
+    background-color: #21dc0c; /* Active state */
+    border-color: #004f7f;
+  }
+  
+  button {
+    padding: 10px 20px;
+  }
+  </style>
+  
+
